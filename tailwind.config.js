@@ -17,16 +17,27 @@ export default {
         "cream-darker": "#D9CEB8",
         "earth-dark": "#1C1C1C",
         "earth-brown": "#5C4A2A",
-        "earth-tan": "#A8885A",
+        "earth-tan": "#8A7560",
       },
       fontFamily: {
         display: ["'Playfair Display'", "Georgia", "serif"],
-        body: ["'DM Sans'", "system-ui", "sans-serif"],
+        body: ["'Inter'", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        card: "0 4px 24px rgba(42,107,79,0.12), 0 1px 6px rgba(42,107,79,0.08)",
-        "card-hover": "0 8px 40px rgba(42,107,79,0.2), 0 2px 10px rgba(42,107,79,0.12)",
-        orange: "0 4px 20px rgba(224,123,32,0.25)",
+        card: "0 2px 16px rgba(42,107,79,0.10), 0 1px 4px rgba(0,0,0,0.05)",
+        "card-hover": "0 8px 36px rgba(42,107,79,0.18), 0 2px 8px rgba(0,0,0,0.08)",
+        orange: "0 4px 20px rgba(224,123,32,0.30)",
+        "green-glow": "0 0 0 3px rgba(42,107,79,0.15)",
+      },
+      animation: {
+        "fade-up": "fadeUp 0.5s ease-out both",
+        "spin-slow": "spin 3s linear infinite",
+      },
+      keyframes: {
+        fadeUp: {
+          "0%": { opacity: 0, transform: "translateY(16px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
       },
     },
   },
