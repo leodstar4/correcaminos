@@ -6,8 +6,8 @@ const steps = [
   {
     number: "01",
     icon: Upload,
-    title: "Registra tu cosecha",
-    description: "El productor sube su cosecha: tipo de producto, cantidad, fecha y precio sugerido. Todo desde el celular en minutos.",
+    title: "Red Maíz Solidaria",
+    description: "El productor se une como inversor (70% utilidad). Acopio en puntos estratégicos de la cuenca Libres-Oriental con secado y certificación.",
     who: "Productor",
     accent: "green",
     bg: "bg-green-primary/10",
@@ -19,8 +19,8 @@ const steps = [
   {
     number: "02",
     icon: Truck,
-    title: "Nosotros coordinamos",
-    description: "Correcaminos verifica calidad, coordina logística con cadena de frío y garantiza la frescura del producto.",
+    title: "Hub Logístico Móvil",
+    description: "Rutas optimizadas (Atlixco→Cholula, 32km) con cadena de frío. 3 viajes/semana, merma <5%. Sin intermediarios.",
     who: "Correcaminos",
     accent: "teal",
     bg: "bg-teal-brand/10",
@@ -32,8 +32,8 @@ const steps = [
   {
     number: "03",
     icon: ShoppingBasket,
-    title: "Recibe producto fresco",
-    description: "El comprador recibe su producto verificado, con trazabilidad completa y garantía de frescura certificada.",
+    title: "Venta directa B2B",
+    description: "Restaurantes, hoteles, supermercados. Precio justo transparente. Trazabilidad blockchain: QR por bulto.",
     who: "Comprador",
     accent: "orange",
     bg: "bg-orange-brand/10",
@@ -80,7 +80,7 @@ export default function HowItWorks() {
             transition={{ duration: 0.5, delay: 0.18 }}
             className="section-subtitle max-w-2xl mx-auto"
           >
-            Tres pasos simples eliminan décadas de abusos en la cadena de suministro agrícola
+            Eliminamos al coyote: el productor recibe 70% de la utilidad. Silos con secado, logística inversa, y precio de mercado en tiempo real.
           </motion.p>
         </div>
 
@@ -131,7 +131,7 @@ export default function HowItWorks() {
           <div className="inline-flex items-center gap-3 bg-green-primary/8 border border-green-primary/20 rounded-2xl px-8 py-4">
             <span className="w-2 h-2 rounded-full bg-teal-brand flex-shrink-0"/>
             <p className="font-body text-green-primary text-sm font-medium">
-              Cadena de frío garantizada · Pago seguro · Soporte 7 días
+              Silos con secado · Blockchain · Cero quemas · Financiamiento Social
             </p>
           </div>
         </motion.div>

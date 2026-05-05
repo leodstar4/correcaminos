@@ -5,12 +5,14 @@ import {
   Search, ShoppingBag, Heart, FileText, LifeBuoy,
   Menu, Bell, LogOut, Star, ChevronDown,
   Plus, Minus, X, ShoppingCart, MapPin, ChevronRight,
-  Truck, Package, CheckCircle, ArrowLeftRight
+  Truck, Package, CheckCircle, ArrowLeftRight, DollarSign
 } from "lucide-react";
 import { products } from "../data/mockProducts";
+import PreciosSNIIM from "../components/PreciosSNIIM";
 
 const navItems = [
   { key: "explorar", label: "Explorar Productos", icon: Search },
+  { key: "precios", label: "Precios SNIIM", icon: DollarSign },
   { key: "pedidos", label: "Mis Pedidos", icon: ShoppingBag },
   { key: "favoritos", label: "Favoritos", icon: Heart },
   { key: "facturacion", label: "Facturación", icon: FileText },
@@ -29,6 +31,7 @@ const categoryColors = {
 const emojiMap = { Verduras: "🥬", Granos: "🌽", Frutas: "🍋" };
 
 const sectionContent = {
+  precios: { emoji: "📊", title: "Precios de Mercado", desc: "Consulta los precios oficiales del SNIIM para negotiate mejores costos con tu proveedor." },
   pedidos: { emoji: "📦", title: "Mis Pedidos", desc: "Aquí verás el estado de todos tus pedidos, desde confirmado hasta entregado." },
   favoritos: { emoji: "❤️", title: "Favoritos", desc: "Guarda tus productores y productos preferidos para encontrarlos fácilmente." },
   facturacion: { emoji: "🧾", title: "Facturación", desc: "Descarga facturas, configura tus datos fiscales y gestiona tus pagos." },
@@ -443,6 +446,16 @@ export default function DashboardComprador() {
                     </p>
                   </div>
                 )}
+              </motion.div>
+            ) : activeNav === "precios" ? (
+              <motion.div
+                key="precios"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
+              >
+                <PreciosSNIIM titulo="Precios Oficiales SNIIM" expandable />
               </motion.div>
             ) : (
               <motion.div

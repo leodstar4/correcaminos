@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown, Zap, Shield, TrendingUp } from "lucide-react";
 
 const floatingStats = [
-  { value: "+40%", label: "más ganancias", color: "bg-white", textColor: "text-green-primary", delay: 0 },
-  { value: "24h", label: "entrega garantizada", color: "bg-orange-brand", textColor: "text-white", delay: 0.6 },
+  { value: "+70%", label: "para el productor", color: "bg-white", textColor: "text-green-primary", delay: 0 },
+  { value: "12 ton", label: "mes ruta piloto", color: "bg-orange-brand", textColor: "text-white", delay: 0.6 },
 ];
 
 export default function Hero() {
@@ -43,7 +43,7 @@ export default function Hero() {
             >
               <span className="w-2 h-2 rounded-full bg-orange-brand animate-pulse"/>
               <span className="font-body text-cream/85 text-xs font-medium tracking-wider">
-                PUEBLA, MÉXICO · IMPACT LAB
+                PUEBLA, MX · RED MAÍZ SOLIDARIA
               </span>
             </motion.div>
 
@@ -68,11 +68,11 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.28 }}
               className="font-body text-cream/75 text-lg leading-relaxed mb-9 max-w-md"
             >
-              Conectamos productores del campo con compradores directamente.{" "}
+              En la cuenca de Libres-Oriental, el productor recibe hasta{" "}
               <strong className="text-orange-light font-semibold">
-                Más dinero para quien trabaja la tierra.
+                70% de la utilidad
               </strong>{" "}
-              Producto más fresco para quien lo compra.
+              thanks to our Red Maíz Solidaria. No more coyotes.
             </motion.p>
 
             {/* CTAs */}
@@ -106,9 +106,9 @@ export default function Hero() {
               className="flex flex-wrap gap-x-6 gap-y-2 mt-8 justify-center lg:justify-start"
             >
               {[
-                { icon: TrendingUp, text: "142 productores activos" },
-                { icon: Shield, text: "Sin comisiones ocultas" },
-                { icon: Zap, text: "6 estados de México" },
+                { icon: TrendingUp, text: "Zona: Cuenca Libres-Oriental" },
+                { icon: Shield, text: "70% utilidad al productor" },
+                { icon: Zap, text: "12 ton/mes ruta piloto" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-1.5">
                   <Icon size={12} className="text-teal-light opacity-80"/>

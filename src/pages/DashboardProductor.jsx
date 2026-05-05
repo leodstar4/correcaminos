@@ -4,13 +4,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Sprout, ShoppingCart, History, CreditCard, LifeBuoy,
   Upload, Plus, X, Image, Check, Clock, TrendingUp,
-  Menu, ChevronRight, Bell, LogOut, Star, Truck, ArrowLeftRight
+  Menu, ChevronRight, Bell, LogOut, Star, Truck, ArrowLeftRight, DollarSign
 } from "lucide-react";
 import { recentOrders, weeklyEarnings } from "../data/mockStats";
 import { productorListings } from "../data/mockProducts";
+import PreciosSNIIM from "../components/PreciosSNIIM";
 
 const navItems = [
   { key: "cosecha", label: "Mi Cosecha", icon: Sprout },
+  { key: "precios", label: "Precios Mercado", icon: DollarSign },
   { key: "pedidos", label: "Pedidos Activos", icon: ShoppingCart },
   { key: "historial", label: "Historial de Ventas", icon: History },
   { key: "pagos", label: "Mis Pagos", icon: CreditCard },
@@ -179,6 +181,12 @@ function ListingRow({ listing }) {
 }
 
 const sectionContent = {
+  precios: {
+    emoji: "📊",
+    title: "Precios de Mercado",
+    desc: "Consulta los precios oficiales del SNIIM para estabelecer tus precios competitivo.",
+    action: null,
+  },
   pedidos: {
     emoji: "📦",
     title: "Pedidos Activos",
@@ -423,6 +431,16 @@ export default function DashboardProductor() {
                   </button>
                 </div>
               </motion.div>
+            ) : activeNav === "precios" ? (
+              <motion.div
+                key="precios"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
+              >
+                <PreciosSNIIM titulo="Precios de Mercado SNIIM" expandable />
+              </motion.div>
             ) : (
               <motion.div
                 key={activeNav}
@@ -435,16 +453,27 @@ export default function DashboardProductor() {
                 <div className="text-5xl mb-5">{section.emoji}</div>
                 <h3 className="font-display font-bold text-earth-dark text-2xl mb-3">{section.title}</h3>
                 <p className="font-body text-earth-tan text-sm max-w-xs mb-6 leading-relaxed">{section.desc}</p>
-                <div className="inline-flex items-center gap-2 bg-orange-brand/10 border border-orange-brand/20 rounded-2xl px-5 py-2.5 mb-6">
-                  <span className="w-2 h-2 rounded-full bg-orange-brand animate-pulse"/>
-                  <span className="font-body text-orange-brand text-xs font-semibold">Próximamente disponible</span>
-                </div>
-                <button
-                  onClick={() => setActiveNav(section.action)}
-                  className="btn-outline text-sm"
-                >
-                  {section.actionLabel}
-                </button>
+                {section.action ? (
+                  <>
+                    <div className="inline-flex items-center gap-2 bg-orange-brand/10 border border-orange-brand/20 rounded-2xl px-5 py-2.5 mb-6">
+                      <span className="w-2 h-2 rounded-full bg-orange-brand animate-pulse"/>
+                      <span className="font-body text-orange-brand text-xs font-semibold">Próximamente disponible</span>
+                    </div>
+                    <button
+                      onClick={() => setActiveNav(section.action)}
+                      className="btn-outline text-sm"
+                    >
+                      {section.actionLabel}
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => setActiveNav("cosecha")}
+                    className="btn-outline text-sm"
+                  >
+                    Volver a Mi Cosecha
+                  </button>
+                )}
               </motion.div>
             )}
           </AnimatePresence>

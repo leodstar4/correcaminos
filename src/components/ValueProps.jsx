@@ -3,21 +3,21 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import {
   TrendingUp, ShieldCheck, CreditCard, Truck,
-  Leaf, Search, Tag, Clock, ArrowRight
+  Leaf, Search, Tag, Clock, ArrowRight, Database, Award, Recycle
 } from "lucide-react";
 
 const productorProps = [
-  { icon: TrendingUp, text: "Gana hasta 40% más por tu cosecha, directo al bolsillo" },
-  { icon: ShieldCheck, text: "Sin coyotes ni regateo. Precios justos garantizados siempre" },
-  { icon: CreditCard, text: "Pago seguro y puntual, sin esperar meses por tu dinero" },
-  { icon: Truck, text: "Acompañamiento logístico completo, de inicio a fin" },
+  { icon: TrendingUp, text: "70% de la utilidad: el productor es inversionista, no proveedor" },
+  { icon: ShieldCheck, text: "Silos con secado: +15-20% valor del grano. No más castigo por humedad" },
+  { icon: CreditCard, text: "Pago directo a cuenta (fideicomiso): sin efectivo en campo, sin riesgos" },
+  { icon: Truck, text: "Rutas optimizadas: 32km Atlixco→Cholula, 3 viajes/semana" },
 ];
 
 const compradorProps = [
-  { icon: Leaf, text: "Producto más fresco que en cualquier mercado intermediario" },
-  { icon: Search, text: "Trazabilidad completa: sabes exactamente quién lo cultivó" },
-  { icon: Tag, text: "Precios justos y transparentes, sin sorpresas en la factura" },
-  { icon: Clock, text: "Entrega garantizada y puntual con cadena de frío certificada" },
+  { icon: Award, text: "Certificación 'Suelo Sano, Grano Sano': prácticas sustentables verificables" },
+  { icon: Search, text: "Trazabilidad blockchain: código QR por bulto con origen y prácticas" },
+  { icon: Tag, text: "Precios reales SNIIM: sin distorsiones de intermediarios" },
+  { icon: Recycle, text: "Logística inversa: devolvemos composta y reciclamos envases agroquímicos" },
 ];
 
 function PropItem({ item, index, dark }) {

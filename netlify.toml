@@ -1,8 +1,15 @@
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
 [build]
   command = "npm run build"
   publish = "dist"
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[schedules]]
+  cron = "0 12 * * *"
+  function_name = "scraper-sniim"

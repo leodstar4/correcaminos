@@ -108,7 +108,7 @@ export default function ImpactCounters() {
             transition={{ duration: 0.5, delay: 0.18 }}
             className="font-body text-cream/60 text-lg max-w-xl mx-auto"
           >
-            Cada número representa una familia que recibe un precio justo por su trabajo
+            Matriz RBM: cada meta es un productorescapado de la pobreza estructural
           </motion.p>
         </div>
 
@@ -128,9 +128,9 @@ export default function ImpactCounters() {
           className="mt-16 text-center border-t border-white/10 pt-12"
         >
           <p className="font-display italic text-cream/75 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
-            "El campo mexicano alimenta al país. Es hora de que el país le devuelva la dignidad al campo."
+            "El coyote se queda con el 70% del valor. Con Correcaminos, yo quedo con el 70%."
           </p>
-          <p className="font-body text-cream/40 text-sm mt-4">— Fundadores de Correcaminos</p>
+          <p className="font-body text-cream/40 text-sm mt-4">— Productor de la cuenca Libres-Oriental</p>
         </motion.div>
       </div>
     </section>
