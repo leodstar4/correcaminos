@@ -1,0 +1,22 @@
+{
+  "ultimoUpdate": "2026-05-05",
+  "origen": "SNIIM",
+  "mercado": "Central de Abastos Puebla",
+  "productos": [
+    { "nombre": "Tomate Saladette", "precioKg": 18.50, "unidad": "kg" },
+    { "nombre": "Maíz Criollo", "precioKg": 12.50, "unidad": "kg" },
+    { "nombre": "Maíz Amarillo", "precioKg": 7.50, "unidad": "kg" },
+    { "nombre": "Frijol Negro", "precioKg": 28.00, "unidad": "kg" },
+    { "nombre": "Frijol Pinto", "precioKg": 26.00, "unidad": "kg" },
+    { "nombre": "Chile Poblano", "precioKg": 32.00, "unidad": "kg" },
+    { "nombre": "Chile Jalapeño", "precioKg": 25.00, "unidad": "kg" },
+    { "nombre": "Papa", "precioKg": 14.00, "unidad": "kg" },
+    { "nombre": "Cebolla Blanca", "precioKg": 16.00, "unidad": "kg" },
+    { "nombre": "Zanahoria", "precioKg": 12.00, "unidad": "kg" },
+    { "nombre": "Lechuga Romana", "precioKg": 15.00, "unidad": "kg" },
+    { "nombre": "Aguacate Hass", "precioKg": 45.00, "unidad": "kg" },
+    { "nombre": "Ejote", "precioKg": 22.00, "unidad": "kg" },
+    { "nombre": "Calabacita", "precioKg": 14.00, "unidad": "kg" },
+    { "nombre": "Brócoli", "precioKg": 20.00, "unidad": "kg" }
+  ]
+}

@@ -1,12 +1,20 @@
+import { useState } from 'react';
 import { usePreciosSNIIM, formatPrecio } from '../hooks/usePreciosSNIIM';
-import { TrendingUp, TrendingDown, RefreshCw, MapPin, Clock } from 'lucide-react';
+import { TrendingUp, TrendingDown, RefreshCw, MapPin, Clock, RotateCcw } from 'lucide-react';
 
-export default function PreciosSNIIM({ titulo = "Precios de Mercado", expandable = false }) {
-  const { datos, cargando } = usePreciosSNIIM();
+export default function PreciosSNIIM({ titulo = "Precios de Mercado" }) {
+  const { datos, cargando, actualizar } = usePreciosSNIIM();
+  const [actualizando, setActualizando] = useState(false);
 
-  if (cargando) {
+  const handleActualizar = async () => {
+    setActualizando(true);
+    await actualizar();
+    setActualizando(false);
+  };
+
+  if (cargando && !datos) {
     return (
-      <div className="bg-white rounded-2xl p-4 border border-cream-dark shadow-card">
+      <div className="bg-white rounded-2xl p-6 border border-cream-dark shadow-card">
         <div className="animate-pulse flex items-center gap-2">
           <RefreshCw size={16} className="text-teal-brand animate-spin"/>
           <span className="font-body text-earth-tan text-sm">Cargando precios...</span>
@@ -17,9 +25,12 @@ export default function PreciosSNIIM({ titulo = "Precios de Mercado", expandable
 
   if (!datos?.productos || datos.productos.length === 0) {
     return (
-      <div className="bg-white rounded-2xl p-4 border border-cream-dark shadow-card">
+      <div className="bg-white rounded-2xl p-6 border border-cream-dark shadow-card">
         <div className="text-center py-4">
           <p className="font-body text-earth-tan text-sm">No hay precios disponibles</p>
+          <button onClick={handleActualizar} className="mt-3 btn-outline text-sm">
+            Reintentar
+          </button>
         </div>
       </div>
     );
@@ -28,11 +39,20 @@ export default function PreciosSNIIM({ titulo = "Precios de Mercado", expandable
   const formatFecha = (fecha) => {
     if (!fecha) return 'Hoy';
     const d = new Date(fecha);
-    return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
+    return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
+  const getDiasTranscurridos = (fecha) => {
+    if (!fecha) return 0;
+    const actualizar = new Date(fecha);
+    const hoy = new Date();
+    return Math.floor((hoy - actualizar) / (1000 * 60 * 60 * 24));
+  };
+
+  const diasViejo = getDiasTranscurridos(datos?.ultimoUpdate);
+
   return (
-    <div className={`bg-white rounded-2xl border border-cream-dark shadow-card overflow-hidden ${expandable ? '' : ''}`}>
+    <div className="bg-white rounded-2xl border border-cream-dark shadow-card overflow-hidden">
       <div className="bg-gradient-to-r from-green-primary to-teal-brand p-4">
         <div className="flex items-center justify-between">
           <div>
@@ -43,15 +63,28 @@ export default function PreciosSNIIM({ titulo = "Precios de Mercado", expandable
             </div>
           </div>
           <div className="text-right">
+            {diasViejo > 1 && (
+              <div className="flex items-center gap-1 text-orange-light text-xs font-body mb-1 bg-orange-brand/30 px-2 py-1 rounded">
+                ⚠️ Sin actualizar ({diasViejo} días)
+              </div>
+            )}
             <div className="flex items-center gap-1 text-cream/80 text-xs font-body">
               <Clock size={10}/>
-              <span>Actualizado: {formatFecha(datos.ultimoUpdate)}</span>
+              <span>{formatFecha(datos.ultimoUpdate)}</span>
             </div>
+            <button
+              onClick={handleActualizar}
+              disabled={actualizando}
+              className="flex items-center gap-1 px-2 py-1 bg-white/20 hover:bg-white/30 rounded-lg text-cream text-xs transition-colors disabled:opacity-50"
+            >
+              <RotateCcw size={10} className={actualizando ? 'animate-spin' : ''}/>
+              {actualizando ? 'Actualizando...' : 'Actualizar'}
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="p-3 space-y-2 max-h-80 overflow-y-auto">
+      <div className="p-3 space-y-2 max-h-96 overflow-y-auto">
         {datos.productos.map((producto, idx) => (
           <div 
             key={producto.nombre || idx} 
@@ -79,7 +112,7 @@ export default function PreciosSNIIM({ titulo = "Precios de Mercado", expandable
 
       <div className="px-4 pb-3">
         <div className="text-xs text-earth-tan font-body text-center">
-          Fuente: SNIIM (economia-sniim.gob.mx)
+          Fuente: SNIIM (economia-sniim.gob.mx) - Precios de hoy
         </div>
       </div>
     </div>

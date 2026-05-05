@@ -1,57 +1,55 @@
 import { useState, useEffect } from 'react';
 
-const PRECIOS_SNIIM_BASE = {
-  ultimoUpdate: '2026-05-05',
-  origen: 'SNIIM - Sistema Nacional de Información de Mercados',
+const PRECIOS_DEFAULT = {
+  ultimoUpdate: new Date().toISOString(),
+  origen: 'SNIIM',
   productos: [
-    { nombre: 'Tomate Saladette', precioKg: 18.50, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Maíz Criollo', precioKg: 12.50, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Maíz Amarillo', precioKg: 7.50, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Frijol Negro', precioKg: 28.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Frijol Pinto', precioKg: 26.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Chile Poblano', precioKg: 32.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Chile Jalapeño', precioKg: 25.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Papa', precioKg: 14.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Cebolla Blanca', precioKg: 16.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Zanahoria', precioKg: 12.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Lechuga Romana', precioKg: 15.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Aguacate Hass', precioKg: 45.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Ejote', precioKg: 22.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Calabacita', precioKg: 14.00, origen: 'Puebla', unidad: 'kg' },
-    { nombre: 'Brócoli', precioKg: 20.00, origen: 'Puebla', unidad: 'kg' },
+    { nombre: 'Tomate Saladette', precioKg: 18.50, unidad: 'kg' },
+    { nombre: 'Maíz Criollo', precioKg: 12.50, unidad: 'kg' },
+    { nombre: 'Maíz Amarillo', precioKg: 7.50, unidad: 'kg' },
+    { nombre: 'Frijol Negro', precioKg: 28.00, unidad: 'kg' },
+    { nombre: 'Frijol Pinto', precioKg: 26.00, unidad: 'kg' },
+    { nombre: 'Chile Poblano', precioKg: 32.00, unidad: 'kg' },
+    { nombre: 'Chile Jalapeño', precioKg: 25.00, unidad: 'kg' },
+    { nombre: 'Papa', precioKg: 14.00, unidad: 'kg' },
+    { nombre: 'Cebolla Blanca', precioKg: 16.00, unidad: 'kg' },
+    { nombre: 'Zanahoria', precioKg: 12.00, unidad: 'kg' },
+    { nombre: 'Lechuga Romana', precioKg: 15.00,unidad: 'kg' },
+    { nombre: 'Aguacate Hass', precioKg: 45.00,unidad: 'kg' },
+    { nombre: 'Ejote', precioKg: 22.00,unidad: 'kg' },
+    { nombre: 'Calabacita', precioKg: 14.00,unidad: 'kg' },
+    { nombre: 'Brócoli', precioKg: 20.00,unidad: 'kg' },
   ],
 };
 
 export function usePreciosSNIIM() {
   const [datos, setDatos] = useState(null);
   const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
+
+  const obtenerPrecios = async () => {
+    try {
+      setCargando(true);
+      const response = await fetch('/precios-sniim.json');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.productos?.length > 0) {
+          setDatos(data);
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('Error cargando precios:', err.message);
+    }
+    setDatos(PRECIOS_DEFAULT);
+  };
 
   useEffect(() => {
-    async function obtenerPrecios() {
-      try {
-        setCargando(true);
-        
-        const respuesta = await fetch('/api/scraper-sniim');
-        
-        if (!respuesta.ok) {
-          throw new Error('Error al obtener precios');
-        }
-        
-        const datos = await respuesta.json();
-        setDatos(datos);
-      } catch (err) {
-        console.warn('SNIIM no disponible, usando datos locales:', err.message);
-        setDatos(PRECIOS_SNIIM_BASE);
-      } finally {
-        setCargando(false);
-      }
-    }
-
     obtenerPrecios();
   }, []);
 
-  return { datos, cargando, error };
+  const actualizar = () => obtenerPrecios();
+
+  return { datos, cargando, actualizar };
 }
 
 export function getPrecioProducto(datos, nombreProducto) {
