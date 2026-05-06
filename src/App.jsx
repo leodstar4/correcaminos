@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 const Landing = lazy(() => import("./pages/Landing"));
 const DashboardProductor = lazy(() => import("./pages/DashboardProductor"));
 const DashboardComprador = lazy(() => import("./pages/DashboardComprador"));
+const ProductorProfile = lazy(() => import("./pages/ProductorProfile"));
 
 function PageLoader() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/productor" element={<DashboardProductor />} />
           <Route path="/comprador" element={<DashboardComprador />} />
+          <Route path="/productor-profile/:id" element={<ProductorProfile />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
