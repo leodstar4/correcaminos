@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { usePreciosSNIIM, formatPrecio } from '../hooks/usePreciosSNIIM';
+import { usePreciosSNIIM, formatPrecio, getUnidadLabel, getHistorialProducto } from '../hooks/usePreciosSNIIM';
 import { TrendingUp, TrendingDown, RefreshCw, MapPin, Clock, RotateCcw } from 'lucide-react';
 
 export default function PreciosSNIIM({ titulo = "Precios de Mercado" }) {
@@ -51,6 +51,20 @@ export default function PreciosSNIIM({ titulo = "Precios de Mercado" }) {
 
   const diasViejo = getDiasTranscurridos(datos?.ultimoUpdate);
 
+  // Cilantro siempre primero; el hook ya lo garantiza pero lo reforzamos aquí
+  const productosOrdenados = datos?.productos
+    ? [
+        ...(datos.productos.filter(p => p.nombre === 'Cilantro')),
+        ...(datos.productos.filter(p => p.nombre !== 'Cilantro')),
+      ]
+    : [];
+
+  const cilantro = productosOrdenados[0]?.nombre === 'Cilantro' ? productosOrdenados[0] : null;
+  const historialCilantro = getHistorialProducto(datos, 'Cilantro');
+  const variacionCilantro = historialCilantro.length >= 2
+    ? ((historialCilantro.at(-1).precio - historialCilantro.at(-2).precio) / historialCilantro.at(-2).precio * 100).toFixed(1)
+    : null;
+
   return (
     <div className="bg-white rounded-2xl border border-cream-dark shadow-card overflow-hidden">
       <div className="bg-gradient-to-r from-green-primary to-teal-brand p-4">
@@ -84,11 +98,48 @@ export default function PreciosSNIIM({ titulo = "Precios de Mercado" }) {
         </div>
       </div>
 
+      {/* Cilantro destacado */}
+      {cilantro && (
+        <div className="mx-3 mt-3 bg-green-primary/8 border border-green-primary/20 rounded-2xl p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="font-body text-xs font-semibold tracking-widest uppercase text-green-primary">Producto principal</span>
+              </div>
+              <div className="font-display font-bold text-earth-dark text-lg leading-none">
+                {cilantro.nombre}
+              </div>
+              <div className="font-body text-earth-tan text-xs mt-1">Puebla · 41% producción nacional</div>
+            </div>
+            <div className="text-right">
+              <div className="font-display font-bold text-green-primary text-2xl leading-none">
+                {formatPrecio(cilantro.precioKg)}
+              </div>
+              <div className="font-body text-earth-tan text-xs mt-0.5">/{getUnidadLabel(cilantro)}</div>
+              {variacionCilantro !== null && (
+                <div className={`inline-flex items-center gap-0.5 text-xs font-medium px-1.5 py-0.5 rounded mt-1 ${
+                  parseFloat(variacionCilantro) >= 0
+                    ? 'bg-orange-brand/10 text-orange-brand'
+                    : 'bg-green-primary/10 text-green-primary'
+                }`}>
+                  {parseFloat(variacionCilantro) >= 0 ? <TrendingUp size={10}/> : <TrendingDown size={10}/>}
+                  {Math.abs(variacionCilantro)}% vs semana ant.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="p-3 space-y-2 max-h-96 overflow-y-auto">
-        {datos.productos.map((producto, idx) => (
-          <div 
-            key={producto.nombre || idx} 
-            className="flex items-center justify-between py-2 px-3 rounded-xl bg-cream/40 hover:bg-cream transition-colors"
+        {productosOrdenados.map((producto, idx) => (
+          <div
+            key={producto.nombre || idx}
+            className={`flex items-center justify-between py-2 px-3 rounded-xl transition-colors ${
+              producto.nombre === 'Cilantro'
+                ? 'bg-green-primary/10 border border-green-primary/20'
+                : 'bg-cream/40 hover:bg-cream'
+            }`}
           >
             <div className="flex-1 min-w-0">
               <div className="font-body font-semibold text-earth-dark text-sm truncate">
@@ -103,7 +154,7 @@ export default function PreciosSNIIM({ titulo = "Precios de Mercado" }) {
             <div className="text-right flex-shrink-0 ml-3">
               <div className="font-display font-bold text-green-primary text-base">
                 {formatPrecio(producto.precioKg)}
-                <span className="font-body text-earth-tan text-xs font-normal ml-1">/kg</span>
+                <span className="font-body text-earth-tan text-xs font-normal ml-1">/{getUnidadLabel(producto)}</span>
               </div>
             </div>
           </div>

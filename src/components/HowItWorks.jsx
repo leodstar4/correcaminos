@@ -63,7 +63,7 @@ export default function HowItWorks() {
           >
             <span className="w-2 h-2 rounded-full bg-green-primary"/>
             <span className="font-body text-green-primary text-xs font-semibold tracking-widest uppercase">
-              3 pasos simples
+              01 · Tesis del proyecto
             </span>
           </motion.div>
           <motion.h2
@@ -80,7 +80,7 @@ export default function HowItWorks() {
             transition={{ duration: 0.5, delay: 0.18 }}
             className="section-subtitle max-w-2xl mx-auto"
           >
-            Eliminamos al coyote: el productor recibe 70% de la utilidad. Silos con secado, logística inversa, y precio de mercado en tiempo real.
+            La respuesta a la falla de mercado es infraestructura compartida: acopio, cadena de frío y venta directa B2B. El productor pasa de proveedor a inversionista con el 70% de la utilidad.
           </motion.p>
         </div>
 

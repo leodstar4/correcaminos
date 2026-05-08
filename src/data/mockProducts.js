@@ -1,5 +1,28 @@
 export const products = [
   {
+    id: 0,
+    name: "Cilantro",
+    origin: "Los Reyes de Juárez",
+    state: "Puebla",
+    category: "Verduras",
+    pricePerKg: 20.0,
+    sniimPrice: 20.0,
+    unit: "manojo",
+    minOrder: 50,
+    harvestedDaysAgo: 1,
+    producer: "Fam. Hernández García",
+    producerId: "fam-hernandez",
+    producerLocation: "Los Reyes de Juárez, Puebla",
+    producerRating: 4.8,
+    producerReviews: 31,
+    available: 5700,
+    freshnessBadge: "Cosechado ayer",
+    image: null,
+    color: "#4A7C59",
+    trazabilidad: true,
+    certificacion: "Producción local",
+  },
+  {
     id: 1,
     name: "Maíz Criollo",
     origin: "Cuenca Libres-Oriental",
@@ -225,7 +248,7 @@ export const productorProfiles = [
     certifications: ["Producción local", "Cosecha diaria"],
     totalSales: 89,
     responseTime: "< 4 horas",
-    products: ["Tomate Saladette", "Cebolla Blanca", "Lechuga Romana"],
+    products: ["Cilantro", "Tomate Saladette", "Cebolla Blanca", "Lechuga Romana"],
     gallery: [
       { id: 1, label: "Invernadero familiar", emoji: "🏡", color: "#E8563A" },
       { id: 2, label: "Cosecha diaria de tomate", emoji: "🍅", color: "#C4A35A" },
@@ -352,6 +375,17 @@ export const productorProfiles = [
 ];
 
 export const productorListings = [
+  {
+    id: 0,
+    product: "Cilantro",
+    quantity: "5,700 manojos",
+    harvestDate: "07 May 2026",
+    priceKg: 20.0,
+    status: "Activo",
+    statusColor: "green",
+    photos: 3,
+    location: "Los Reyes de Juárez, Puebla",
+  },
   {
     id: 1,
     product: "Maíz Criollo",

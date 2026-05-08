@@ -8,70 +8,98 @@ on:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Obtener precios SNIIM
         run: |
           curl -s "http://www.economia-sniim.gob.mx/nuevo/Home.aspx?opcion=Consultas/MercadosNacionales/PreciosDeMercado/Agricolas/ConsultaFrutasYHortalizas.aspx" > sniim_page.html
-          
+
       - name: Extraer precios
         run: |
           node << 'EOF'
           const fs = require('fs');
           const html = fs.readFileSync('sniim_page.html', 'utf8');
-          
-          const productos = [];
+
+          // Cilantro: cotizado por manojo en SNIIM. El resto por kg.
           const patterns = [
-            /Tomate.*?\$([0-9.,]+)/gi,
-            /Maíz.*?\$([0-9.,]+)/gi,
-            /Frijol.*?\$([0-9.,]+)/gi,
-            /Chile.*?\$([0-9.,]+)/gi,
-            /Papa.*?\$([0-9.,]+)/gi,
-            /Cebolla.*?\$([0-9.,]+)/gi,
-            /Zanahoria.*?\$([0-9.,]+)/gi,
-            /Aguacate.*?\$([0-9.,]+)/gi,
+            { nombre: 'Cilantro',         regex: /Cilantro.*?\$([0-9.,]+)/gi,  unidad: 'manojo' },
+            { nombre: 'Tomate Saladette', regex: /Tomate.*?\$([0-9.,]+)/gi,    unidad: 'kg' },
+            { nombre: 'Maíz Criollo',     regex: /Ma[íi]z.*?\$([0-9.,]+)/gi,  unidad: 'kg' },
+            { nombre: 'Frijol Negro',     regex: /Frijol.*?\$([0-9.,]+)/gi,    unidad: 'kg' },
+            { nombre: 'Chile Poblano',    regex: /Chile.*?\$([0-9.,]+)/gi,     unidad: 'kg' },
+            { nombre: 'Papa',             regex: /Papa.*?\$([0-9.,]+)/gi,      unidad: 'kg' },
+            { nombre: 'Cebolla Blanca',   regex: /Cebolla.*?\$([0-9.,]+)/gi,  unidad: 'kg' },
+            { nombre: 'Zanahoria',        regex: /Zanahoria.*?\$([0-9.,]+)/gi, unidad: 'kg' },
+            { nombre: 'Aguacate Hass',    regex: /Aguacate.*?\$([0-9.,]+)/gi, unidad: 'kg' },
           ];
-          
-          patterns.forEach((regex, i) => {
+
+          const scraped = [];
+          patterns.forEach(({ nombre, regex, unidad }) => {
             const match = regex.exec(html);
             if (match) {
               const precio = parseFloat(match[1].replace(',', ''));
-              if (!isNaN(precio)) {
-                productos.push({
-                  nombre: ['Tomate', 'Maíz', 'Frijol', 'Chile', 'Papa', 'Cebolla', 'Zanahoria', 'Aguacate'][i],
-                  precioKg: precio,
-                  unidad: 'kg',
-                  ultimoUpdate: new Date().toISOString()
-                });
+              if (!isNaN(precio) && precio > 0) {
+                scraped.push({ nombre, precioKg: precio, unidad });
               }
             }
           });
-          
-          // Si no hay datos, usar datos de respaldo
-          if (productos.length === 0) {
-            console.log('Usando datos de respaldo');
-          }
-          
-          fs.writeFileSync('precios-sniim.json', JSON.stringify({
+
+          // Fallback completo con cilantro como primer producto
+          const FALLBACK = [
+            { nombre: 'Cilantro',         precioKg: 20.0,  unidad: 'manojo' },
+            { nombre: 'Tomate Saladette', precioKg: 18.50, unidad: 'kg' },
+            { nombre: 'Maíz Criollo',     precioKg: 12.50, unidad: 'kg' },
+            { nombre: 'Frijol Negro',     precioKg: 28.00, unidad: 'kg' },
+            { nombre: 'Chile Poblano',    precioKg: 32.00, unidad: 'kg' },
+            { nombre: 'Papa',             precioKg: 14.00, unidad: 'kg' },
+            { nombre: 'Cebolla Blanca',   precioKg: 16.00, unidad: 'kg' },
+            { nombre: 'Zanahoria',        precioKg: 12.00, unidad: 'kg' },
+            { nombre: 'Aguacate Hass',    precioKg: 45.00, unidad: 'kg' },
+          ];
+
+          // Mezclar scrapeados con fallback: usar scraped si existe, fallback si no
+          const productosFinales = FALLBACK.map(fb => {
+            const live = scraped.find(s => s.nombre === fb.nombre);
+            return live || fb;
+          });
+
+          console.log(`Scrapeados: ${scraped.length}/${FALLBACK.length} productos`);
+
+          // Cargar historial existente (max 90 entradas, una por día)
+          let historialExistente = [];
+          try {
+            const existing = JSON.parse(fs.readFileSync('public/precios-sniim.json', 'utf8'));
+            historialExistente = existing.historial || [];
+          } catch (_) {}
+
+          const hoy = new Date().toISOString().split('T')[0];
+          const preciosHoy = {};
+          productosFinales.forEach(p => { preciosHoy[p.nombre] = p.precioKg; });
+
+          const historialActualizado = [
+            ...historialExistente.filter(h => h.fecha !== hoy),
+            { fecha: hoy, precios: preciosHoy },
+          ].slice(-90);
+
+          fs.writeFileSync('public/precios-sniim.json', JSON.stringify({
             ultimoUpdate: new Date().toISOString(),
             origen: 'SNIIM',
             mercado: 'Central de Abastos Puebla',
-            productos: productos.length > 0 ? productos : [
-              { nombre: 'Tomate Saladette', precioKg: 18.50 },
-              { nombre: 'Maíz Criollo', precioKg: 12.50 },
-              { nombre: 'Frijol Negro', precioKg: 28.00 },
-              { nombre: 'Chile Poblano', precioKg: 32.00 },
-              { nombre: 'Papa', precioKg: 14.00 },
-              { nombre: 'Cebolla Blanca', precioKg: 16.00 },
-              { nombre: 'Zanahoria', precioKg: 12.00 },
-              { nombre: 'Aguacate Hass', precioKg: 45.00 }
-            ].map(p => ({...p, unidad: 'kg', ultimoUpdate: new Date().toISOString()}))
+            productos: productosFinales,
+            historial: historialActualizado,
           }, null, 2));
           EOF
-          
+
       - name: Guardar precios
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add precios-sniim.json
-          git commit -m "Update precios SNIIM $(date +%Y-%m-%d)" || echo "No changes"
+          git add public/precios-sniim.json
+          git diff --cached --quiet || git commit -m "Update precios SNIIM $(date +%Y-%m-%d)"
           git push

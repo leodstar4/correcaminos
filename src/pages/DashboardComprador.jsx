@@ -118,9 +118,9 @@ function ProductCard({ product, onAddToCart, cartCount }) {
         <div className="flex items-end justify-between mb-3">
           <div>
             <span className="font-display font-bold text-earth-dark text-lg">${product.pricePerKg.toFixed(2)}</span>
-            <span className="font-body text-earth-tan text-xs ml-1">/kg</span>
+            <span className="font-body text-earth-tan text-xs ml-1">/{product.unit}</span>
           </div>
-          <div className="font-body text-earth-tan text-xs">{product.available.toLocaleString("es-MX")} kg disp.</div>
+          <div className="font-body text-earth-tan text-xs">{product.available.toLocaleString("es-MX")} {product.unit} disp.</div>
         </div>
         <div className="flex items-center gap-2 mb-4 pb-3 border-b border-cream-dark">
           <div className="w-6 h-6 rounded-full bg-green-primary flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
@@ -196,7 +196,7 @@ function CartDrawer({ cart, products, onClose, onUpdateQty }) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-body font-semibold text-earth-dark text-sm truncate">{item.name}</div>
-                  <div className="font-body text-earth-tan text-xs">${item.pricePerKg}/kg</div>
+                  <div className="font-body text-earth-tan text-xs">${item.pricePerKg}/{item.unit}</div>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <button onClick={() => onUpdateQty(item.id, -1)} className="w-7 h-7 rounded-full bg-cream-dark hover:bg-cream-darker flex items-center justify-center text-earth-dark transition-colors">

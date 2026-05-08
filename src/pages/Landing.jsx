@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
+import Problematica from "../components/Problematica";
 import HowItWorks from "../components/HowItWorks";
 import ValueProps from "../components/ValueProps";
 import ImpactCounters from "../components/ImpactCounters";
@@ -12,6 +13,7 @@ export default function Landing() {
     <div className="min-h-screen">
       <Navbar />
       <Hero />
+      <Problematica />
       <HowItWorks />
       <ValueProps />
       <ImpactCounters />

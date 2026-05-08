@@ -93,6 +93,16 @@ export const kpisRBM = {
 
 export const recentOrders = [
   {
+    id: "CC-2026-0103",
+    product: "Cilantro",
+    buyer: "Restaurante La Milpa",
+    quantity: "570 manojos",
+    amount: 11400,
+    status: "En tránsito",
+    date: "08 May",
+    route: "Los Reyes de Juárez → Cholula",
+  },
+  {
     id: "CC-2026-0102",
     product: "Maíz Criollo",
     buyer: "Restaurante Casa Ricardo",

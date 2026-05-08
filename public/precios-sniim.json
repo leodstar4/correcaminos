@@ -1,8 +1,9 @@
 {
-  "ultimoUpdate": "2026-05-05",
+  "ultimoUpdate": "2026-05-08",
   "origen": "SNIIM",
   "mercado": "Central de Abastos Puebla",
   "productos": [
+    { "nombre": "Cilantro", "precioKg": 20.0, "unidad": "manojo" },
     { "nombre": "Tomate Saladette", "precioKg": 18.50, "unidad": "kg" },
     { "nombre": "Maíz Criollo", "precioKg": 12.50, "unidad": "kg" },
     { "nombre": "Maíz Amarillo", "precioKg": 7.50, "unidad": "kg" },
@@ -18,5 +19,13 @@
     { "nombre": "Ejote", "precioKg": 22.00, "unidad": "kg" },
     { "nombre": "Calabacita", "precioKg": 14.00, "unidad": "kg" },
     { "nombre": "Brócoli", "precioKg": 20.00, "unidad": "kg" }
+  ],
+  "historial": [
+    { "fecha": "2026-04-09", "precios": { "Cilantro": 22.0, "Tomate Saladette": 17.00, "Maíz Criollo": 12.00, "Chile Poblano": 30.00 } },
+    { "fecha": "2026-04-16", "precios": { "Cilantro": 19.0, "Tomate Saladette": 17.50, "Maíz Criollo": 12.00, "Chile Poblano": 31.00 } },
+    { "fecha": "2026-04-23", "precios": { "Cilantro": 21.0, "Tomate Saladette": 18.00, "Maíz Criollo": 12.50, "Chile Poblano": 31.50 } },
+    { "fecha": "2026-04-30", "precios": { "Cilantro": 18.0, "Tomate Saladette": 18.00, "Maíz Criollo": 12.50, "Chile Poblano": 32.00 } },
+    { "fecha": "2026-05-07", "precios": { "Cilantro": 20.0, "Tomate Saladette": 18.50, "Maíz Criollo": 12.50, "Chile Poblano": 32.00 } },
+    { "fecha": "2026-05-08", "precios": { "Cilantro": 20.0, "Tomate Saladette": 18.50, "Maíz Criollo": 12.50, "Chile Poblano": 32.00 } }
   ]
 }

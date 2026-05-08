@@ -74,7 +74,7 @@ const faqProductor = [
 // ── Sub-components ────────────────────────────────────────────────────────
 
 function UploadForm({ onClose }) {
-  const [formData, setFormData] = useState({ producto: "", cantidad: "", unidad: "kg", fechaCosecha: "", precio: "" });
+  const [formData, setFormData] = useState({ producto: "Cilantro", cantidad: "", unidad: "manojo", fechaCosecha: "", precio: "" });
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -101,8 +101,18 @@ function UploadForm({ onClose }) {
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className="font-body text-xs font-semibold text-earth-brown uppercase tracking-widest mb-1.5 block">Producto *</label>
-              <input type="text" placeholder="Ej: Maíz criollo, Tomate saladette..." className="input-field"
-                value={formData.producto} onChange={(e) => setFormData({ ...formData, producto: e.target.value })}/>
+              <select className="input-field" value={formData.producto}
+                onChange={(e) => setFormData({ ...formData, producto: e.target.value })}>
+                <option value="Cilantro">Cilantro</option>
+                <option value="Maíz Criollo">Maíz Criollo</option>
+                <option value="Tomate Saladette">Tomate Saladette</option>
+                <option value="Chile Poblano">Chile Poblano</option>
+                <option value="Frijol Negro">Frijol Negro</option>
+                <option value="Papa">Papa</option>
+                <option value="Cebolla Blanca">Cebolla Blanca</option>
+                <option value="Zanahoria">Zanahoria</option>
+                <option value="Aguacate Hass">Aguacate Hass</option>
+              </select>
             </div>
             <div>
               <label className="font-body text-xs font-semibold text-earth-brown uppercase tracking-widest mb-1.5 block">Cantidad *</label>
@@ -112,6 +122,7 @@ function UploadForm({ onClose }) {
             <div>
               <label className="font-body text-xs font-semibold text-earth-brown uppercase tracking-widest mb-1.5 block">Unidad</label>
               <select className="input-field" value={formData.unidad} onChange={(e) => setFormData({ ...formData, unidad: e.target.value })}>
+                <option value="manojo">Manojos</option>
                 <option value="kg">Kilogramos (kg)</option>
                 <option value="ton">Toneladas</option>
                 <option value="caja">Cajas</option>
