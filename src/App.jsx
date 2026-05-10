@@ -1,5 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import ToastNotificationSystem from "./components/ToastNotificationSystem";
 
 const Landing = lazy(() => import("./pages/Landing"));
 const DashboardProductor = lazy(() => import("./pages/DashboardProductor"));
@@ -31,6 +33,14 @@ export default function App() {
           <Route path="/productor-profile/:id" element={<ProductorProfile />} />
         </Routes>
       </Suspense>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          duration: 5000,
+          style: { fontFamily: "'Inter', sans-serif", borderRadius: '16px', padding: 0, background: 'transparent', boxShadow: 'none' },
+        }}
+      />
+      <ToastNotificationSystem />
     </BrowserRouter>
   );
 }

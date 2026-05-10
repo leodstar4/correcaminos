@@ -117,3 +117,25 @@
     background-clip: text;
   }
 }
+
+/* ── Leaflet customizations ─────────────────────────────────────── */
+.leaflet-container {
+  border-radius: 16px;
+  font-family: 'Inter', sans-serif;
+  z-index: 1;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+.leaflet-popup-tip { background: white; }
+.leaflet-control-zoom a {
+  border-radius: 8px !important;
+  font-family: 'Inter', sans-serif;
+}
+.leaflet-control-attribution {
+  font-size: 10px;
+  opacity: 0.7;
+}

@@ -6,19 +6,27 @@ import {
   Upload, Plus, X, Image, Check, Clock, TrendingUp,
   Menu, ChevronRight, Bell, LogOut, Star, Truck, ArrowLeftRight, DollarSign,
   ChevronDown, ChevronUp, MessageCircle, Mail, Phone, Download, CheckCircle,
-  AlertCircle, Package, XCircle
+  AlertCircle, Package, XCircle, BarChart2, Calculator, Map
 } from "lucide-react";
 import { recentOrders, weeklyEarnings } from "../data/mockStats";
 import { productorListings } from "../data/mockProducts";
 import PreciosSNIIM from "../components/PreciosSNIIM";
+import SimulationControls from "../components/SimulationControls";
+import SimuladorPrecioJusto from "../components/SimuladorPrecioJusto";
+import CalculadoraGanancia from "../components/CalculadoraGanancia";
+import SimuladorCapacidad from "../components/SimuladorCapacidad";
+import ChatPanel from "../components/ChatPanel";
+import { WeeklyRevenueChart, MonthlyVolumeChart, HarvestProjectionChart, SalesDistributionChart } from "../components/charts/DashboardProductorCharts";
+import OrderTrackerMap from "../components/OrderTrackerMap";
 
 const navItems = [
-  { key: "cosecha",  label: "Mi Cosecha",          icon: Sprout       },
-  { key: "precios",  label: "Precios Mercado",      icon: DollarSign   },
-  { key: "pedidos",  label: "Pedidos Activos",      icon: ShoppingCart },
-  { key: "historial",label: "Historial de Ventas",  icon: History      },
-  { key: "pagos",    label: "Mis Pagos",            icon: CreditCard   },
-  { key: "soporte",  label: "Soporte",              icon: LifeBuoy     },
+  { key: "cosecha",  label: "Mi Cosecha",          icon: Sprout        },
+  { key: "precios",  label: "Precios Mercado",      icon: DollarSign    },
+  { key: "pedidos",  label: "Pedidos Activos",      icon: ShoppingCart  },
+  { key: "historial",label: "Historial de Ventas",  icon: History       },
+  { key: "pagos",    label: "Mis Pagos",            icon: CreditCard    },
+  { key: "soporte",  label: "Soporte",              icon: LifeBuoy      },
+  { key: "mensajes", label: "Mensajes",             icon: MessageCircle },
 ];
 
 const statusConfig = {
@@ -547,6 +555,7 @@ function SoporteSection() {
 export default function DashboardProductor() {
   const [activeNav, setActiveNav] = useState("cosecha");
   const [showForm, setShowForm] = useState(false);
+  const [showPrecioJusto, setShowPrecioJusto] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const navigate = useNavigate();
@@ -632,6 +641,7 @@ export default function DashboardProductor() {
           </div>
 
           <div className="flex items-center gap-2">
+            <SimulationControls />
             <div className="relative" ref={notifRef}>
               <button onClick={() => setNotifOpen(v => !v)} className="relative p-2.5 rounded-xl text-earth-tan hover:bg-cream-dark transition-colors">
                 <Bell size={18}/>
@@ -691,6 +701,36 @@ export default function DashboardProductor() {
                   </div>
                 </div>
 
+                {/* Botones de simulación */}
+                <div className="flex flex-wrap gap-2">
+                  <button onClick={() => setShowPrecioJusto(true)}
+                    className="flex items-center gap-2 bg-green-primary/8 border border-green-primary/20 text-green-primary font-body font-semibold text-sm px-4 py-2.5 rounded-full hover:bg-green-primary/15 transition-colors"
+                  >
+                    <Calculator size={14}/>
+                    Simulador Precio Justo
+                  </button>
+                </div>
+
+                {/* Gráficos */}
+                <div>
+                  <h2 className="font-display font-bold text-earth-dark text-base mb-3 flex items-center gap-2">
+                    <BarChart2 size={17} className="text-teal-brand"/>
+                    Análisis de Rendimiento
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <WeeklyRevenueChart />
+                    <MonthlyVolumeChart />
+                    <HarvestProjectionChart />
+                    <SalesDistributionChart />
+                  </div>
+                </div>
+
+                {/* Calculadoras inline */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <CalculadoraGanancia />
+                  <SimuladorCapacidad />
+                </div>
+
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="font-display font-bold text-earth-dark text-lg">Mis publicaciones</h2>
@@ -728,7 +768,18 @@ export default function DashboardProductor() {
               </motion.div>
 
             ) : activeNav === "pedidos" ? (
-              <PedidosActivosSection/>
+              <motion.div key="pedidos-wrap" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }} className="space-y-6">
+                <div className="bg-white rounded-2xl border border-cream-dark shadow-card p-5">
+                  <h3 className="font-display font-bold text-earth-dark text-base mb-4 flex items-center gap-2">
+                    <Map size={16} className="text-teal-brand"/>
+                    Rastreo de Envíos en Tiempo Real
+                  </h3>
+                  <div style={{ height: 420 }}>
+                    <OrderTrackerMap/>
+                  </div>
+                </div>
+                <PedidosActivosSection/>
+              </motion.div>
 
             ) : activeNav === "historial" ? (
               <HistorialSection/>
@@ -739,6 +790,21 @@ export default function DashboardProductor() {
             ) : activeNav === "soporte" ? (
               <SoporteSection/>
 
+            ) : activeNav === "mensajes" ? (
+              <motion.div key="mensajes" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
+                <div className="bg-white rounded-2xl border border-cream-dark shadow-card p-5 text-center py-16">
+                  <div className="text-5xl mb-4">💬</div>
+                  <h3 className="font-display font-bold text-earth-dark text-lg mb-2">Centro de Mensajes</h3>
+                  <p className="font-body text-earth-tan text-sm max-w-xs mx-auto mb-4">
+                    Usa el chat en la esquina inferior derecha para comunicarte con compradores.
+                  </p>
+                  <div className="inline-flex items-center gap-2 bg-green-primary/8 border border-green-primary/20 text-green-primary px-4 py-2 rounded-full font-body text-sm">
+                    <MessageCircle size={14}/>
+                    El chat está activo abajo a la derecha
+                  </div>
+                </div>
+              </motion.div>
+
             ) : null}
           </AnimatePresence>
         </div>
@@ -747,6 +813,10 @@ export default function DashboardProductor() {
       <AnimatePresence>
         {showForm && <UploadForm onClose={() => setShowForm(false)}/>}
       </AnimatePresence>
+      <AnimatePresence>
+        {showPrecioJusto && <SimuladorPrecioJusto onClose={() => setShowPrecioJusto(false)}/>}
+      </AnimatePresence>
+      <ChatPanel role="productor" />
     </div>
   );
 }

@@ -6,10 +6,18 @@ import {
   Menu, Bell, LogOut, Star, ChevronDown, ChevronUp,
   Plus, Minus, X, ShoppingCart, MapPin, ChevronRight,
   Truck, Package, CheckCircle, ArrowLeftRight, DollarSign, Users,
-  Download, Mail, MessageCircle, Phone, Trash2, Clock, Building
+  Download, Mail, MessageCircle, Phone, Trash2, Clock, Building,
+  BarChart2, Calculator, Map, TrendingDown
 } from "lucide-react";
 import { products, productorProfiles } from "../data/mockProducts";
 import PreciosSNIIM from "../components/PreciosSNIIM";
+import SimulationControls from "../components/SimulationControls";
+import WidgetAhorro from "../components/WidgetAhorro";
+import CalculadoraPedido from "../components/CalculadoraPedido";
+import HistorialAhorro from "../components/HistorialAhorro";
+import ChatPanel from "../components/ChatPanel";
+import { MonthlySpendingChart, SavingsChart, PriceTrendsChart, CategoryBreakdownChart } from "../components/charts/DashboardCompradorCharts";
+import OrderTrackerMap from "../components/OrderTrackerMap";
 
 const navItems = [
   { key: "explorar",    label: "Explorar Productos", icon: Search },
@@ -609,6 +617,7 @@ export default function DashboardComprador() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [showCalculadora, setShowCalculadora] = useState(false);
   const [cart, setCart] = useState({});
   const [activeCategory, setActiveCategory] = useState("Todas");
   const [activeState, setActiveState] = useState("Todo México");
@@ -717,6 +726,7 @@ export default function DashboardComprador() {
           </div>
 
           <div className="flex items-center gap-2">
+            <SimulationControls />
             {/* Notification bell */}
             <div className="relative" ref={notifRef}>
               <button
@@ -754,6 +764,44 @@ export default function DashboardComprador() {
           <AnimatePresence mode="wait">
             {activeNav === "explorar" ? (
               <motion.div key="explorar" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }}>
+                {/* Widget de ahorro */}
+                <div className="mb-6">
+                  <WidgetAhorro />
+                </div>
+
+                {/* Botón calculadora */}
+                <div className="mb-4">
+                  <button onClick={() => setShowCalculadora(true)}
+                    className="flex items-center gap-2 bg-teal-brand/8 border border-teal-brand/20 text-teal-brand font-body font-semibold text-sm px-4 py-2.5 rounded-full hover:bg-teal-brand/15 transition-colors"
+                  >
+                    <Calculator size={14}/>
+                    Calculadora de Pedido Óptimo
+                  </button>
+                </div>
+
+                {/* Gráficos */}
+                <div className="mb-6">
+                  <h2 className="font-display font-bold text-earth-dark text-base mb-3 flex items-center gap-2">
+                    <BarChart2 size={17} className="text-green-primary"/>
+                    Mi Actividad de Compra
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <MonthlySpendingChart />
+                    <SavingsChart />
+                    <PriceTrendsChart />
+                    <CategoryBreakdownChart />
+                  </div>
+                </div>
+
+                {/* Historial de ahorro */}
+                <div className="bg-white rounded-2xl border border-cream-dark shadow-card p-5 mb-6">
+                  <h2 className="font-display font-bold text-earth-dark text-base mb-4 flex items-center gap-2">
+                    <TrendingDown size={17} className="text-green-primary"/>
+                    Historial de Ahorro
+                  </h2>
+                  <HistorialAhorro />
+                </div>
+
                 <div className="mb-6 space-y-3">
                   <div className="relative">
                     <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-earth-tan pointer-events-none"/>
@@ -862,7 +910,18 @@ export default function DashboardComprador() {
               </motion.div>
 
             ) : activeNav === "pedidos" ? (
-              <PedidosSection/>
+              <motion.div key="pedidos-wrap" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }} className="space-y-6">
+                <div className="bg-white rounded-2xl border border-cream-dark shadow-card p-5">
+                  <h3 className="font-display font-bold text-earth-dark text-base mb-4 flex items-center gap-2">
+                    <Map size={16} className="text-teal-brand"/>
+                    Rastreo de Envíos en Tiempo Real
+                  </h3>
+                  <div style={{ height: 420 }}>
+                    <OrderTrackerMap/>
+                  </div>
+                </div>
+                <PedidosSection/>
+              </motion.div>
 
             ) : activeNav === "favoritos" ? (
               <FavoritosSection onNavigate={setActiveNav}/>
@@ -881,6 +940,10 @@ export default function DashboardComprador() {
       <AnimatePresence>
         {cartOpen && <CartDrawer cart={cart} products={products} onClose={() => setCartOpen(false)} onUpdateQty={updateQty}/>}
       </AnimatePresence>
+      <AnimatePresence>
+        {showCalculadora && <CalculadoraPedido onClose={() => setShowCalculadora(false)}/>}
+      </AnimatePresence>
+      <ChatPanel role="comprador" />
     </div>
   );
 }
