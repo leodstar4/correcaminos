@@ -1,6 +1,9 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ShoppingBag, CheckCircle } from 'lucide-react'
+import { X, ShoppingBag, CheckCircle, AlertCircle } from 'lucide-react'
 
 const PRODUCTOS_BASE = [
   { name: 'Maíz Criollo',    kg: 50,  precio: 12.5,  emoji: '🌽', categoria: 'Granos' },
@@ -14,6 +17,13 @@ const PRODUCTOS_BASE = [
 ]
 
 const TIPOS = ['Restaurante', 'Hotel', 'Tienda']
+
+const schema = z.object({
+  presupuesto: z
+    .number({ invalid_type_error: 'Ingresa un presupuesto válido' })
+    .min(1000, 'El presupuesto mínimo es $1,000 MXN')
+    .max(999999, 'El presupuesto máximo es $999,999 MXN'),
+})
 
 function optimizarPedido(presupuesto, tipo) {
   let pool = [...PRODUCTOS_BASE].sort((a, b) => {
@@ -38,9 +48,15 @@ function optimizarPedido(presupuesto, tipo) {
 }
 
 export default function CalculadoraPedido({ onClose }) {
-  const [presupuesto, setPresupuesto] = useState(10000)
   const [tipo, setTipo] = useState('Restaurante')
 
+  const { register, watch, formState: { errors } } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: { presupuesto: 10000 },
+    mode: 'onChange',
+  })
+
+  const presupuesto = watch('presupuesto') ?? 0
   const opcion = optimizarPedido(presupuesto, tipo)
   const totalCorrecaminos = opcion.reduce((s, p) => s + p.subtotal, 0)
   const totalCoyotes = Math.round(totalCorrecaminos * 1.38)
@@ -74,9 +90,16 @@ export default function CalculadoraPedido({ onClose }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="font-body text-xs font-semibold text-earth-brown uppercase tracking-widest mb-1.5 block">Presupuesto (MXN)</label>
-              <input type="number" min={1000} step={500} value={presupuesto}
-                onChange={(e) => setPresupuesto(+e.target.value)}
-                className="input-field" />
+              <input
+                {...register('presupuesto', { valueAsNumber: true })}
+                type="number" min={1000} max={999999} step={500}
+                className={`input-field ${errors.presupuesto ? 'border-red-300' : ''}`}
+              />
+              {errors.presupuesto && (
+                <p className="font-body text-red-500 text-xs mt-1 flex items-center gap-1">
+                  <AlertCircle size={10} />{errors.presupuesto.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="font-body text-xs font-semibold text-earth-brown uppercase tracking-widest mb-1.5 block">Tipo de negocio</label>

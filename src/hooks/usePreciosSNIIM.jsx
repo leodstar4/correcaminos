@@ -43,6 +43,7 @@ export function usePreciosSNIIM() {
           const cilantro = data.productos.find(p => p.nombre === 'Cilantro');
           const resto = data.productos.filter(p => p.nombre !== 'Cilantro');
           setDatos({ ...data, productos: cilantro ? [cilantro, ...resto] : data.productos });
+          setCargando(false);
           return;
         }
       }
@@ -50,6 +51,7 @@ export function usePreciosSNIIM() {
       console.warn('Error cargando precios:', err.message);
     }
     setDatos(PRECIOS_DEFAULT);
+    setCargando(false);
   };
 
   useEffect(() => { obtenerPrecios(); }, []);

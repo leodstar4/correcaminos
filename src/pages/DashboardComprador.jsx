@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useAuthStore from "../store/useAuthStore";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, ShoppingBag, Heart, FileText, LifeBuoy,
@@ -623,6 +624,7 @@ export default function DashboardComprador() {
   const [activeState, setActiveState] = useState("Todo México");
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { logout, switchRole } = useAuthStore();
   const notifRef = useRef(null);
 
   useEffect(() => {
@@ -689,17 +691,17 @@ export default function DashboardComprador() {
         </nav>
 
         <div className="mx-3 mb-3">
-          <button onClick={() => navigate("/productor")} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-green-primary/25 bg-green-primary/6 hover:bg-green-primary/12 transition-colors text-green-primary text-sm font-medium font-body">
+          <button onClick={() => { switchRole(); navigate("/productor"); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl border border-green-primary/25 bg-green-primary/6 hover:bg-green-primary/12 transition-colors text-green-primary text-sm font-medium font-body">
             <ArrowLeftRight size={15}/>
             <span>Ir al Panel Productor</span>
           </button>
         </div>
 
         <div className="p-3 border-t border-cream-dark">
-          <Link to="/" className="sidebar-item w-full text-left text-earth-tan hover:text-red-500 hover:bg-red-50">
+          <button onClick={() => { logout(); navigate("/login"); }} className="sidebar-item w-full text-left text-earth-tan hover:text-red-500 hover:bg-red-50">
             <LogOut size={16}/>
-            <span>Volver al inicio</span>
-          </Link>
+            <span>Cerrar sesión</span>
+          </button>
         </div>
       </aside>
 

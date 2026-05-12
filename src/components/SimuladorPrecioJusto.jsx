@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, TrendingUp } from 'lucide-react'
 import { usePreciosSNIIM, getPrecioProducto } from '../hooks/usePreciosSNIIM'
+import { calcularIngresos } from '../utils/precios'
 
 const PRODUCTOS = [
   'Cilantro', 'Tomate Saladette', 'Maíz Criollo', 'Chile Poblano',
@@ -37,13 +38,8 @@ export default function SimuladorPrecioJusto({ onClose }) {
 
   const precioObj = datos ? getPrecioProducto(datos, producto) : null
   const precioSNIIM = precioObj?.precioKg ?? 12.5
-  const precioCoyote = +(precioSNIIM * 0.5).toFixed(2)
-  const precioCorrecaminos = +(precioSNIIM * 0.9).toFixed(2)
-
-  const ingresoCorrecaminos = Math.round(precioCorrecaminos * cantidad)
-  const ingresoCoyote       = Math.round(precioCoyote * cantidad)
-  const diferencia          = ingresoCorrecaminos - ingresoCoyote
-  const pct                 = precioCoyote > 0 ? Math.round(((precioCorrecaminos - precioCoyote) / precioCoyote) * 100) : 0
+  const { precioCoyote, precioCorrecaminos, ingresoCorrecaminos, ingresoCoyote, diferencia, pct } =
+    calcularIngresos(precioSNIIM, cantidad)
 
   const animatedCorrecaminos = useCountUp(ingresoCorrecaminos)
   const animatedCoyote       = useCountUp(ingresoCoyote)
