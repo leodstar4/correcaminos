@@ -1,5 +1,5 @@
 {
-  "ultimoUpdate": "2026-06-22T17:03:41.542Z",
+  "ultimoUpdate": "2026-06-23T14:56:35.860Z",
   "origen": "SNIIM",
   "mercado": "Central de Abastos Puebla",
   "productos": [
@@ -722,6 +722,20 @@
     },
     {
       "fecha": "2026-06-22",
+      "precios": {
+        "Cilantro": 20,
+        "Tomate Saladette": 18.5,
+        "Maíz Criollo": 12.5,
+        "Frijol Negro": 28,
+        "Chile Poblano": 32,
+        "Papa": 14,
+        "Cebolla Blanca": 16,
+        "Zanahoria": 12,
+        "Aguacate Hass": 45
+      }
+    },
+    {
+      "fecha": "2026-06-23",
       "precios": {
         "Cilantro": 20,
         "Tomate Saladette": 18.5,
